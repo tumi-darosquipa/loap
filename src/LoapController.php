@@ -103,7 +103,6 @@ class LoapController
 
         ini_set('soap.wsdl_cache_enable', 0);
         ini_set('soap.wsdl_cache_ttl', 0);
-
     }
 
     /**
@@ -169,24 +168,18 @@ class LoapController
                     echo self::serverFault($response);
                     
                 } else {
-                    
                     echo $response;
-                    
                 }
-
             }
 
-
         } catch (\Exception $e) {
-
             $output->headers->set("Status", 500);
             echo self::serverFault($e);
-            
         }
 
         $output->setContent(ob_get_clean());
-        return $output;
 
+        return $output;
     }
 
     /**
@@ -198,6 +191,7 @@ class LoapController
     {
         $url = url(app()->request->server()['REQUEST_URI']);
         $pos = strpos($url, '?');
+
         return $pos ? substr($url, 0, $pos) : $url;
     }
     
@@ -209,7 +203,7 @@ class LoapController
      */
     public static function log($message = '')
     {
-        if(config('loap.logging', false)) {
+        if (config('loap.logging', false)) {
             Log::info($message);
         }
 
@@ -227,6 +221,7 @@ class LoapController
         self::log($exception->getTraceAsString());
         $faultcode = 'SOAP-ENV:Server';
         $faultstring = $exception->getMessage();
+
         return view('loap::fault', compact('faultcode', 'faultstring'));
     }
 }
